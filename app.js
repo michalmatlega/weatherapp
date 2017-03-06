@@ -6,8 +6,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var cron = require('node-cron');
 
-var config = require('./config');
-
 var DarkSky = require('dark-sky');
 var forecast = new DarkSky(process.env.DARKSKY_KEY);
 var MongoClient = require('mongodb').MongoClient;
