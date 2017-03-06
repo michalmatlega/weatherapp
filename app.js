@@ -11,7 +11,7 @@ var forecast = new DarkSky('8abdde6af96a9dc38f30ba79b8346b9d');
 var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 
-var url = 'mongodb://localhost:27017/myproject';
+var config = require('./config');
 
 
 var index = require('./routes/index');
@@ -52,7 +52,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-var task = cron.schedule('*/5 * * * *', function(){
+var task = cron.schedule('*/2 * * * *', function(){
   forecast
 	    .latitude('49.7999')            
 	    .longitude('18.7878') 
@@ -60,7 +60,7 @@ var task = cron.schedule('*/5 * * * *', function(){
 	    .units('si')
 	    .get()                          
 	    .then(res => {                 
-	        MongoClient.connect(url, function(err, db) {
+	        MongoClient.connect(config.mongoUrl, function(err, db) {
 			  assert.equal(null, err);
 			  console.log("Connected successfully to server");
 			  insertDocuments(db, res, function() {
