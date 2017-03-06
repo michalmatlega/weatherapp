@@ -6,12 +6,14 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var cron = require('node-cron');
 
+var config = require('./config');
+
 var DarkSky = require('dark-sky');
-var forecast = new DarkSky('8abdde6af96a9dc38f30ba79b8346b9d');
+var forecast = new DarkSky(config.darkSkyApiKey);
 var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 
-var config = require('./config');
+
 
 
 var index = require('./routes/index');
