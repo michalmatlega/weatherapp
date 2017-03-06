@@ -9,7 +9,7 @@ var cron = require('node-cron');
 var config = require('./config');
 
 var DarkSky = require('dark-sky');
-var forecast = new DarkSky(config.darkSkyApiKey);
+var forecast = new DarkSky(process.env.DARKSKY_KEY);
 var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 
@@ -62,7 +62,7 @@ var task = cron.schedule('*/2 * * * *', function(){
 	    .units('si')
 	    .get()                          
 	    .then(res => {                 
-	        MongoClient.connect(config.mongoUrl, function(err, db) {
+	        MongoClient.connect(process.env.MONGODB_URI, function(err, db) {
 			  assert.equal(null, err);
 			  console.log("Connected successfully to server");
 			  insertDocuments(db, res, function() {
