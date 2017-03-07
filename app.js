@@ -79,9 +79,11 @@ var task = cron.schedule('*/2 * * * *', function(){
 
 task.start();
 
-var pinger = cron.schedule('*/10 * * * * *', function(){
-	
-}
+var pinger = cron.schedule('*/5 * * * *', function(){
+	http.get("https://whispering-lowlands-94908.herokuapp.com/");
+});
+
+pinger.start();
 
 
 
