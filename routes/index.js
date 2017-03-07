@@ -12,7 +12,7 @@ var games = [
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
- 	
+ 	res.send("Howdy! Welcome to Yet Another WeatherApp");
 
  	
 });

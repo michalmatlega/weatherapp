@@ -60,13 +60,17 @@ var task = cron.schedule('*/2 * * * *', function(){
 	    .units('si')
 	    .get()                          
 	    .then(res => {                 
-	        MongoClient.connect(process.env.MONGODB_URI, function(err, db) {
-			  assert.equal(null, err);
-			  console.log("Connected successfully to server");
-			  insertDocuments(db, res, function() {
-			    db.close();
-			  });
-			});
+	    	MongoClient.connect(process.env.MONGODB_URI)
+  				.then(function (db) { // <- db as first argument
+    			insertDocuments(db, res, function() {
+			    	db.close();
+			  	});
+  			})
+  			.catch(function (err) {
+  				console.log(err);
+  			})
+
+
 	    })
 	    .catch(err => {                 
 	        console.log(err)
@@ -74,6 +78,10 @@ var task = cron.schedule('*/2 * * * *', function(){
 });
 
 task.start();
+
+var pinger = cron.schedule('*/10 * * * * *', function(){
+	
+}
 
 
 
