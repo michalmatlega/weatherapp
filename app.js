@@ -81,7 +81,7 @@ task.start();
 
 var pinger = cron.schedule('*/5 * * * *', function(){
 	console.log("pinger in action");
-	http.get("https://whispering-lowlands-94908.herokuapp.com/");
+	http.get("http://whispering-lowlands-94908.herokuapp.com/");
 });
 
 pinger.start();
