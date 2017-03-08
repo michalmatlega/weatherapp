@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var cheerio = require('cheerio');
 var http = require('http');
+var MongoClient = require('mongodb').MongoClient;
+var assert = require('assert');
 
 var games = [
     'shenzhen-io',
@@ -12,7 +14,18 @@ var games = [
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
- 	res.send("Howdy! Welcome to Yet Another WeatherApp");
+	
+
+	MongoClient.connect(process.env.MONGODB_URI)
+  				.then(function (db) { // <- db as first argument
+    			getCurrentWeather(db, function(currentWeather) {
+			    	db.close();
+			    	res.send(currentWeather);
+			  	});
+  			})
+  			.catch(function (err) {
+  				console.log(err);
+  			});
 
  	
 });
@@ -81,6 +94,19 @@ var getPagesArray = function(){
     });
 
     return result;
+}
+
+var getCurrentWeather = function(db, callback) {
+
+  var collection = db.collection('weather');
+
+  collection.findOne(
+    {},{sort: [['_id', -1]]}
+  , function(err, result) {
+    assert.equal(err, null);
+    console.log("Fetched a weather data.");
+    callback(result);
+  });
 }
 
 module.exports = router;
