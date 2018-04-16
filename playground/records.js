@@ -70,9 +70,9 @@ let getMaxTempForDay = function(day){       //example 2018
             if (err) console.log(err);
             //console.log(value);
 
-          //  if(value.length()){
+            if(value){
                 let dayRecord = new DayRecord({
-                    type: 'minTemperature',
+                    type: 'maxTemperature',
                     value: value.currently.temperature,
                     time: value.currently.time,
                     day: day
@@ -80,12 +80,12 @@ let getMaxTempForDay = function(day){       //example 2018
 
                 dayRecord.save().then(() => {
                     console.log(`Max temperature day ${day} saved.`)
-                    mongoose.disconnect();
+                    //mongoose.disconnect();
                 }).catch((err) => {
                     console.log(err);
-                    mongoose.disconnect();
+                    //mongoose.disconnect();
                 });
-           // }
+            }
 
 
 
@@ -95,14 +95,18 @@ let getMaxTempForDay = function(day){       //example 2018
     //console.log(start,end);
 }
 
-// let daysOfYear = [];
-// let start = moment('2017-01-01');
-// for (let d = start; d.isBefore(); d + d.add(1, 'days')) {
-//     let tmp = moment(d);
-//     daysOfYear.push(tmp);
-// }
-//
-// console.log(daysOfYear);
+let daysOfYear = [];
+let start = moment('2018-04-01');
+for (let d = start; d.isBefore(); d + d.add(1, 'days')) {
+    let tmp = moment(d);
+    daysOfYear.push(tmp);
+}
+
+//console.log(daysOfYear);
 
 
-getMaxTempForDay('2018-04-01');
+daysOfYear.forEach((day) => {
+    getMaxTempForDay(day);
+});
+
+//getMaxTempForDay('2018-04-01');
