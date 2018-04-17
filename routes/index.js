@@ -9,7 +9,8 @@ router.get('/', function(req, res, next) {
 	
 
 	MongoClient.connect(process.env.MONGODB_URI)
-  				.then(function (db) { // <- db as first argument
+  				.then(function (client) { // <- db as first argument
+                    let db = client.db();
     			getCurrentWeather(db, function(currentWeather) {
 			    	db.close();
 			    	//res.send(currentWeather);
