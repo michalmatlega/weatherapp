@@ -12,7 +12,6 @@ router.get('/', function(req, res, next) {
   				.then(function (client) { // <- db as first argument
                     let db = client.db();
     			getCurrentWeather(db, function(currentWeather) {
-			    	db.close();
 			    	//res.send(currentWeather);
                     res.render('index', currentWeather);
 			  	});
