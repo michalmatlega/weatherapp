@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var cron = require('node-cron');
+require('dotenv').config();
 
 var DarkSky = require('dark-sky');
 var forecast = new DarkSky(process.env.DARKSKY_KEY);
@@ -12,7 +13,6 @@ var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 
 var http = require('http');
-
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -61,9 +61,10 @@ var task = cron.schedule('*/2 * * * *', function(){
 	    .get()                          
 	    .then(res => {                 
 	    	MongoClient.connect(process.env.MONGODB_URI)
-  				.then(function (db) { // <- db as first argument
+  				.then(function (client) { // <- db as first argument
+  					let db = client.db();
     			insertDocuments(db, res, function() {
-			    	db.close();
+
 			  	});
   			})
   			.catch(function (err) {
