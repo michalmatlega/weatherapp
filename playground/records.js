@@ -57,29 +57,34 @@ let DayRecord = mongoose.model('DayRecord', {
 
 
 
-let getMaxTempForDay = function(day){       //example 2018
+let getRecordForDay = function(day,type,minmax){       //example 2018
     let start = moment(day).unix();
     let end = moment(day).add(1, 'days').unix();
+
+    let sort = {};
+    sort[`currently.${type}`] = minmax;
+
 
     Weather.findOne({})
         .where('currently.time')
         .gt(start)
         .lt(end)
-        .sort({'currently.temperature': -1})
+        .sort(sort)
         .exec((err, value) => {
             if (err) console.log(err);
             //console.log(value);
 
             if(value){
                 let dayRecord = new DayRecord({
-                    type: 'maxTemperature',
+                    type: type,
+                    minmax: minmax,
                     value: value.currently.temperature,
                     time: value.currently.time,
                     day: day
                 });
 
                 dayRecord.save().then(() => {
-                    console.log(`Max temperature day ${day} saved.`)
+                    console.log(`Day ${day} saved.`)
                     //mongoose.disconnect();
                 }).catch((err) => {
                     console.log(err);
@@ -106,7 +111,8 @@ for (let d = start; d.isBefore(); d + d.add(1, 'days')) {
 
 
 daysOfYear.forEach((day) => {
-    getMaxTempForDay(day);
+    getRecordForDay(day,'temperature',-1);
 });
 
 //getMaxTempForDay('2018-04-01');
+

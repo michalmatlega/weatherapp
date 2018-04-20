@@ -1,7 +1,7 @@
-var express = require('express');
-var router = express.Router();
-var MongoClient = require('mongodb').MongoClient;
-var assert = require('assert');
+let express = require('express');
+let router = express.Router();
+let MongoClient = require('mongodb').MongoClient;
+let assert = require('assert');
 
 
 /* GET home page. */
@@ -23,9 +23,9 @@ router.get('/', function(req, res, next) {
  	
 });
 
-var getCurrentWeather = function(db, callback) {
+let getCurrentWeather = function(db, callback) {
 
-  var collection = db.collection('weather');
+  let collection = db.collection('weather');
 
   collection.findOne(
     {},{sort: [['_id', -1]]}
